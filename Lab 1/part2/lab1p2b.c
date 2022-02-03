@@ -4,7 +4,7 @@ int accumulate(int x) {
     // Modify this function so that it accumulates values passed to it to
     // a value called "acc".
 
-    int acc = 0;
+    static int acc = 0;
 
     acc = acc + x;
     printf("acc is now %d\n", acc);
