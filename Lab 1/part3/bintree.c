@@ -113,12 +113,35 @@ void delNode(TTreeNode *node, TTreeNode *prevnode) {
 // phoneNum set to "phoneNum".
 void delTree(TTreeNode *root) {
     // Implement deleting the entire tree, whose
-    // root is at "root".
+    // root is at "root"
+    if (root == NULL) {
+      return;
+    } else {
+      if ((root->left == NULL) && (root->right == NULL)) {
+        freenode(root);
+      } else if (root->left == NULL) {
+        delTree(root->right);
+        freenode(root);
+      } else if (root->right == NULL) {
+        delTree(root->left);
+        freenode(root);
+      } else {
+        delTree(root->left);
+        delTree(root->right);
+        freenode(root);
+      }
+    }
 }
 
 TTreeNode *makeNewNode(char *name, char *phoneNum) {
     // Implement makeNewNode to create a new
     // TTreeNode containing name and phoneNum
+   TTreeNode *p = (TTreeNode *) malloc(sizeof(TTreeNode));
+   p->name = (char *) malloc(strlen(name) + 1);
+   strcpy(p->name, name);
+   strcpy(p->phoneNum, phoneNum);
+
+   return p;
 }
 
 // Add a new node to the tree. 
@@ -129,13 +152,54 @@ void addNode(TTreeNode **root, TTreeNode *node) {
 
     // Add a new node to the tree, where root is
     // the POINTER to the tree's root.
+    if (*root == NULL) {
+      *root = node;
+    } else {
+       TTreeNode *trav = *root;
+       while (1) {
+          int cmp = strcmp(trav->name, node->name);
+          if (cmp < 0) {
+            if (trav->right == NULL) {
+              trav->right = node;
+              break;
+            } else {
+              trav = trav ->right;
+            }
+          } else {
+            if (trav->left == NULL) {
+              trav->left = node;
+              break;
+            } else {
+              trav = trav->left;
+            }
+          }
+       }
+    }
 }
 
 void freenode(TTreeNode *node) {
-    // Frees the memory used by node.
+    // Frees the memory used by node
+    free(node->name);
+    free(node);
 }
 
 void print_inorder(TTreeNode *node) {
     // Implement in-order printing of the tree
-    // Recursion is probably best here.
+    // Recursion is probably best here
+    if (node == NULL) {
+      return;
+    } else if ((node->left == NULL) && (node->right == NULL)) { 
+      printf("Name: %s, Number: %s \n", node->name, node->phoneNum);
+    } else if (node->left == NULL) {
+      printf("Name: %s, Number: %s \n", node->name, node->phoneNum);
+      print_inorder(node->right);
+    } else if (node->right == NULL) {
+      print_inorder(node->left);
+      printf("Name: %s, Number: %s \n", node->name, node->phoneNum);
+    } else {
+      print_inorder(node->left);
+      printf("Name: %s, Number: %s \n", node->name, node->phoneNum);
+      print_inorder(node->right);
+    }
+    
 }
