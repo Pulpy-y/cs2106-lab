@@ -140,6 +140,8 @@ TTreeNode *makeNewNode(char *name, char *phoneNum) {
    p->name = (char *) malloc(strlen(name) + 1);
    strcpy(p->name, name);
    strcpy(p->phoneNum, phoneNum);
+   p->left = NULL;
+   p->right = NULL;
 
    return p;
 }
@@ -156,19 +158,22 @@ void addNode(TTreeNode **root, TTreeNode *node) {
       *root = node;
     } else {
        TTreeNode *trav = *root;
+       
        while (1) {
           int cmp = strcmp(trav->name, node->name);
           if (cmp < 0) {
             if (trav->right == NULL) {
               trav->right = node;
-              break;
+              return;
+              //found = true;
             } else {
               trav = trav ->right;
             }
           } else {
             if (trav->left == NULL) {
               trav->left = node;
-              break;
+              return;
+              //found = true;
             } else {
               trav = trav->left;
             }
