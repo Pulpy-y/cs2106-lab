@@ -58,9 +58,16 @@ double reduce() {
     return _res;
 }
 
-/* Implement flex_reduce here:
 
-double flex_reduce(clear, op){
+
+double flex_reduce(void (*clear)(void) , void (*op)(double)){
+  int ndx = _rear;
+
+  clear();
+  while(ndx != _front) {
+    op(_queue[ndx]);
+    ndx = (ndx + 1) % MAX_Q_SIZE;
+  }
     // clear(); // Clear _res to either 0 or 1
 	// for every element in queue:
 		//Call op with element.
@@ -68,6 +75,4 @@ double flex_reduce(clear, op){
 	return _res;
 
 }
-
-*/
 
