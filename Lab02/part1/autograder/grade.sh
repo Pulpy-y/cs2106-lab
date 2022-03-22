@@ -28,7 +28,7 @@ done
 
 # Iterate over every submission directory
 processed=0
-echo -e "Test date and time: $(date +"%A, %e %B %Y, %T") \n" >> results.out
+echo -e "Test date and time: $(date +"%A, %e %B %Y, %T") \n" > results.out
 
 for folder in ./subs/*
 do  
@@ -36,7 +36,7 @@ do
     score=0
     let entries=entries+1
     # Compile C code
-    gcc $folder/*.c -o $folder/$1
+    gcc $folder/*.c -o $folder/$1 2> compile_errors.out
     # Print compile error message to output file
     if [[ $? -ne 0 ]]; then
       echo "Directory $name has a compile error." >> results.out
@@ -46,7 +46,7 @@ do
       do
         $folder/$1 < $f > $f.student.out
     # Compare with reference output files  and award 1 mark if they are identical
-        if [[ $(diff $f.student.out $f.out) -eq 0 ]]; then #no difference
+        if [[ $(diff $f.student.out $f.out) == "" ]]; then #no difference
           let score=score+1
         fi
       done
